@@ -42,7 +42,7 @@ for cmake_env_var in cmake_env_vars:
         cmake_args.extend([f'-D{cmake_env_var}={cmake_var}'])
 
 # Add parameters to cmake_args and define_macros
-cmake_args += ["-DUNITTESTS=OFF"]
+cmake_args += ["-DUNITTESTS=OFF", "-GNinja"]
 cmake_build_flags = []
 lib_subdir = []
 
