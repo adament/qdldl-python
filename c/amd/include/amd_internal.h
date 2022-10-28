@@ -37,7 +37,7 @@
 #define NDEBUG
 #endif
 
-#include "qdldl_types.h"
+#include "qdldl/qdldl_types.h"
 #ifndef DLONG
 #define DLONG
 #endif

@@ -1,5 +1,5 @@
 // Source code for QDLDL, AMD and permutations
-#include "qdldl/include/qdldl.h"
+#include "qdldl/qdldl.h"
 #include "amd/include/amd.h"
 #include "amd/include/perm.h"
 #include <stdexcept>

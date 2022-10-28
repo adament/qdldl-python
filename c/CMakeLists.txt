@@ -6,9 +6,7 @@ project (qdldl_amd)
 # Needed for compilation to succeed
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/out)
-
-add_subdirectory(qdldl EXCLUDE_FROM_ALL)
+find_package(qdldl REQUIRED CONFIG)
 
 set(
     amd_src
@@ -33,8 +31,8 @@ set(
 
 
 # Add QDLDL+AMD library
-add_library(qdldlamd STATIC ${amd_src} $<TARGET_OBJECTS:qdldlobject>)
+add_library(qdldlamd STATIC ${amd_src})
+target_link_libraries(qdldlamd qdldl)
 target_include_directories(qdldlamd PRIVATE
 	                   ${CMAKE_CURRENT_SOURCE_DIR}/amd/include
-	                   ${CMAKE_CURRENT_SOURCE_DIR}/qdldl/include
 			    )

@@ -32,6 +32,8 @@ class get_pybind_include(object):
         import pybind11
         return pybind11.get_include(self.user)
 
+# conda environment prefix
+prefix = os.environ["LIBRARY_PREFIX"] if system() == 'Windows' else os.environ["PREFIX"]
 
 cmake_args = []
 # What variables from the environment do we wish to pass on to cmake as variables?
@@ -97,7 +99,7 @@ class build_ext_qdldl(build_ext):
 qdldl = Extension('qdldl',
                   sources=glob(os.path.join('cpp', '*.cpp')),
                   include_dirs=[os.path.join('c'),
-                                os.path.join('c', 'qdldl', 'include'),
+                                os.path.join(prefix, 'include'),
                                 get_pybind_include(),
                                 get_pybind_include(user=False)],
                   language='c++',

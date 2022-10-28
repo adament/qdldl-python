@@ -42,7 +42,7 @@
 extern "C" {
 #endif
 
-#include "qdldl_types.h"
+#include "qdldl/qdldl_types.h"
 #define DLONG
 typedef QDLDL_float c_float;
 

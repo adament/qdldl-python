@@ -2,7 +2,7 @@
 extern "C" {
 # endif // ifdef __cplusplus
 
-#include "qdldl_types.h"
+#include "qdldl/qdldl_types.h"
 
 /**
  * C = A(p,p)= PAP' where A and C are symmetric the upper part stored;
