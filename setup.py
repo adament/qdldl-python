@@ -44,18 +44,23 @@ for cmake_env_var in cmake_env_vars:
         cmake_args.extend([f'-D{cmake_env_var}={cmake_var}'])
 
 # Add parameters to cmake_args and define_macros
-cmake_args += ["-DUNITTESTS=OFF", "-GNinja"]
+cmake_args += ["-DUNITTESTS=OFF", "-GNinja", f'-DCMAKE_INSTALL_PREFIX={prefix}', '-DCMAKE_BUILD_TYPE=Release']
 cmake_build_flags = []
 lib_subdir = []
 
 # Check if windows linux or mac to pass flag
 if system() == 'Windows':
-    cmake_build_flags += ['--config', 'Release']
-    lib_name = 'qdldlamd.lib'
-    lib_subdir = ['Release']
+    cmake_args += ['-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON']
+    lib_prefix = ''
+    lib_ext = '.lib'
+elif system() == "Linux":
+    lib_prefix = 'lib'
+    lib_ext = '.so'
+else:
+    lib_prefix = 'lib'
+    lib_ext = '.dylib'
 
-else:  # Linux or Mac
-    lib_name = 'libqdldlamd.a'
+lib_name = lib_prefix + "qdldl"
 
 # Set optimizer flag
 if system() != 'Windows':
@@ -67,9 +72,6 @@ else:
 current_dir = os.getcwd()
 qdldl_dir = os.path.join(current_dir, 'c',)
 qdldl_build_dir = os.path.join(qdldl_dir, 'build')
-qdldl_lib = [qdldl_build_dir, 'out'] + lib_subdir + [lib_name]
-qdldl_lib = os.path.join(*qdldl_lib)
-
 
 class build_ext_qdldl(build_ext):
     def build_extensions(self):
@@ -88,6 +90,7 @@ class build_ext_qdldl(build_ext):
         call(['cmake'] + cmake_args + ['..'])
         call(['cmake', '--build', '.', '--target', 'qdldlamd'] +
              cmake_build_flags)
+        call(['cmake', '--install', '.'])
 
         # Change directory back to the python interface
         os.chdir(current_dir)
@@ -104,7 +107,8 @@ qdldl = Extension('qdldl',
                                 get_pybind_include(user=False)],
                   language='c++',
                   extra_compile_args=compile_args + ['-std=c++11'],
-                  extra_objects=[qdldl_lib])
+                  extra_objects=[os.path.join(prefix, "lib", x + lib_ext)
+                                 for x in [lib_name, lib_name + "amd"]])
 
 
 def readme():

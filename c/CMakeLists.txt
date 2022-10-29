@@ -31,8 +31,14 @@ set(
 
 
 # Add QDLDL+AMD library
-add_library(qdldlamd STATIC ${amd_src})
+add_library(qdldlamd SHARED ${amd_src})
 target_link_libraries(qdldlamd qdldl)
 target_include_directories(qdldlamd PRIVATE
 	                   ${CMAKE_CURRENT_SOURCE_DIR}/amd/include
 			    )
+
+install(TARGETS qdldlamd
+    RUNTIME DESTINATION "bin"
+    LIBRARY DESTINATION "lib"
+    ARCHIVE DESTINATION "lib"
+)
