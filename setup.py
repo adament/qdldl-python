@@ -36,15 +36,9 @@ class get_pybind_include(object):
 prefix = os.environ["LIBRARY_PREFIX"] if system() == 'Windows' else os.environ["PREFIX"]
 
 cmake_args = []
-# What variables from the environment do we wish to pass on to cmake as variables?
-cmake_env_vars = ('CMAKE_GENERATOR', 'CMAKE_GENERATOR_PLATFORM')
-for cmake_env_var in cmake_env_vars:
-    cmake_var = os.environ.get(cmake_env_var)
-    if cmake_var:
-        cmake_args.extend([f'-D{cmake_env_var}={cmake_var}'])
 
 # Add parameters to cmake_args and define_macros
-cmake_args += ["-DUNITTESTS=OFF", "-GNinja", f'-DCMAKE_INSTALL_PREFIX={prefix}', '-DCMAKE_BUILD_TYPE=Release']
+cmake_args = ["-DUNITTESTS=OFF", "-GNinja", f'-DCMAKE_INSTALL_PREFIX={prefix}', '-DCMAKE_BUILD_TYPE=Release']
 cmake_build_flags = []
 lib_subdir = []
 
